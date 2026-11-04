@@ -127,6 +127,22 @@ pip3 install -r requirements.txt
 
 ```
 
+#### (Optional) Install as a package
+
+Installing the project itself (in addition to, or instead of, the
+`requirements.txt` step above) installs the same dependencies **and** puts the
+`hexstrike_mcp` and `hexstrike-server` commands on your `PATH`:
+
+```bash
+pip3 install -e .        # editable install from the repo root
+
+hexstrike-server --help  # starts the API server
+hexstrike_mcp --help     # starts the MCP client
+```
+
+This is required if you register the MCP client via `command -v hexstrike_mcp`
+(see the Claude Code section below); without it, that command does not exist.
+
 ### Installation and Setting Up Guide for various AI Clients:
 
 #### Installation & Demo Video
@@ -234,6 +250,27 @@ Edit `~/.config/Claude/claude_desktop_config.json`:
   }
 }
 ```
+
+### Claude Code Integration
+
+Register the MCP client with the `claude mcp add` command. Two equivalent forms:
+
+```bash
+# A) Point directly at the script (works after `pip install -r requirements.txt`)
+claude mcp add --transport stdio --scope user hexstrike-ai -- \
+  python3 /path/to/hexstrike-ai/hexstrike_mcp.py \
+  --server http://127.0.0.1:8888
+
+# B) Use the installed console command (requires `pip install -e .` first,
+#    which creates the `hexstrike_mcp` command on your PATH)
+claude mcp add --transport stdio --scope user hexstrike-ai -- \
+  "$(command -v hexstrike_mcp)" \
+  --server http://127.0.0.1:8888
+```
+
+Form **B** fails silently if the package has not been installed, because
+`command -v hexstrike_mcp` expands to an empty string. Run `pip install -e .`
+first, or use form **A**.
 
 ### VS Code Copilot Integration
 
