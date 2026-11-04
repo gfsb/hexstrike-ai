@@ -1,0 +1,16 @@
+# Python build / install artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+*.egg
+
+# Virtual environments
+hexstrike-env/
+hexstrike_env/
+.venv/
+venv/
+
+# Runtime logs
+*.log
